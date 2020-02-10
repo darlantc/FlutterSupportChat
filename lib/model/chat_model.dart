@@ -1,6 +1,7 @@
 import 'package:flutter_chat/model/author_model.dart';
 
 class ChatModel {
+  String id;
   AuthorModel admin;
   AuthorModel user;
   int createdAt;
@@ -8,12 +9,13 @@ class ChatModel {
   bool isClosed;
   String lastMessage;
   int lastMessageTimestamp;
+  AuthorType lastMessageAuthor;
   int messagesCount;
-  String title;
   String subject;
   String userId;
 
   ChatModel({
+    this.id,
     this.admin,
     this.user,
     this.createdAt,
@@ -21,8 +23,8 @@ class ChatModel {
     this.isClosed,
     this.lastMessage,
     this.lastMessageTimestamp,
+    this.lastMessageAuthor,
     this.messagesCount,
-    this.title,
     this.subject,
     this.userId,
   });

@@ -3,13 +3,16 @@ import 'package:flutter_chat/components/button/button.dart';
 import 'package:flutter_chat/components/loading/loading_view.dart';
 import 'package:flutter_chat/services/notifications_service.dart';
 import 'package:flutter_chat/stores/auth_store.dart';
+import 'package:flutter_chat/stores/chat_store.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     AuthStore authStore = Modular.get<AuthStore>();
+    ChatStore chatStore = Modular.get<ChatStore>();
     NotificationsService notificationsService =
         Modular.get<NotificationsService>();
 
@@ -32,9 +35,14 @@ class HomePage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text("Bem vindo!"),
-                  Container(
-                    height: 20,
+                  Container(height: 20),
+                  Button(
+                    color: Colors.blue,
+                    icon: FontAwesomeIcons.comments,
+                    label: "Abrir Chat",
+                    onPressed: () => chatStore.setSelectedChatId("chat1"),
                   ),
+                  Container(height: 20),
                   Button(
                     color: Colors.lightBlue,
                     icon: Icons.notifications,

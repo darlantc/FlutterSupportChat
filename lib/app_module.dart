@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_chat/pages/chat_page.dart';
 import 'package:flutter_chat/pages/login_page.dart';
 import 'package:flutter_chat/pages/home_page.dart';
 import 'package:flutter_chat/routes/app_routes.dart';
@@ -17,6 +18,7 @@ class AppModule extends MainModule {
   List<Bind> get binds => [
         Bind((i) => notificationsService),
         Bind((i) => mainStore.authStore),
+        Bind((i) => mainStore.chatStore),
         Bind((i) => mainStore.settingsStore),
       ];
 
@@ -29,6 +31,10 @@ class AppModule extends MainModule {
         Router(
           pathForRoute(APP_ROUTE.HOME),
           child: (_, args) => HomePage(),
+        ),
+        Router(
+          "${pathForRoute(APP_ROUTE.CHAT)}:id",
+          child: (_, args) => ChatPage(),
         ),
       ];
 

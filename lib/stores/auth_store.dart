@@ -71,7 +71,12 @@ abstract class _AuthStore with Store {
     this.setIsFetching(true);
     // TODO: substituir fake abaixo por autenticação do Firebase
     Future.delayed(Duration(seconds: 3), () {
-      var user = UserModel(name: "Test user", email: "user@test.com");
+      var user = UserModel(
+        name: "Test user",
+        email: "user@test.com",
+        token: "user1",
+        isAdmin: true,
+      );
 
       this.setCurrentUser(user);
       this.setIsFetching(false);
