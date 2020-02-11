@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_chat/model/author_model.dart';
-import 'package:intl/intl.dart';
+import 'package:flutter_chat/utils/date_utils.dart';
 
 enum MessageType {
   text,
@@ -27,8 +27,6 @@ class MessageModel {
   });
 
   String get formattedData {
-    var date = DateTime.fromMicrosecondsSinceEpoch(this.timestamp * 1000);
-    var formatter = DateFormat("dd/MM/yy HH:mm");
-    return formatter.format(date);
+    return formattedDayAndHourFromFirebaseTimestamp(this.timestamp);
   }
 }

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_chat/pages/chat_page.dart';
+import 'package:flutter_chat/pages/chats_list_page.dart';
 import 'package:flutter_chat/pages/login_page.dart';
 import 'package:flutter_chat/pages/home_page.dart';
+import 'package:flutter_chat/pages/new_chat_page.dart';
 import 'package:flutter_chat/routes/app_routes.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_chat/services/notifications_service.dart';
@@ -31,6 +33,14 @@ class AppModule extends MainModule {
         Router(
           pathForRoute(APP_ROUTE.HOME),
           child: (_, args) => HomePage(),
+        ),
+        Router(
+          pathForRoute(APP_ROUTE.CHATS_LIST),
+          child: (_, args) => ChatsListPage(),
+        ),
+        Router(
+          pathForRoute(APP_ROUTE.NEW_CHAT),
+          child: (_, args) => NewChatPage(),
         ),
         Router(
           "${pathForRoute(APP_ROUTE.CHAT)}:id",

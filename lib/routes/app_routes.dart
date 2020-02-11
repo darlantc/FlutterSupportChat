@@ -1,4 +1,4 @@
-enum APP_ROUTE { LOGIN, HOME, USER_PROFILE, CHATS_LIST, CHAT }
+enum APP_ROUTE { LOGIN, HOME, USER_PROFILE, CHATS_LIST, CHAT, NEW_CHAT }
 
 String pathForRoute(APP_ROUTE route) {
   switch (route) {
@@ -9,7 +9,9 @@ String pathForRoute(APP_ROUTE route) {
     case APP_ROUTE.CHATS_LIST:
       return "/chats";
     case APP_ROUTE.CHAT:
-      return "/chat/";
+      return "/chats/";
+    case APP_ROUTE.NEW_CHAT:
+      return "/chats/new";
     case APP_ROUTE.HOME:
     default:
       return "/";

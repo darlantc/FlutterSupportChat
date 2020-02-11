@@ -1,7 +1,7 @@
 import 'package:flutter_chat/routes/app_routes.dart';
 import 'package:flutter_chat/stores/chat_store.dart';
 import 'package:flutter_chat/stores/settings_store.dart';
-import 'package:get/get.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:mobx/mobx.dart';
 import 'package:flutter_chat/services/notifications_service.dart';
 
@@ -41,9 +41,11 @@ class MainStore {
       (bool isAuthenticated) {
         print("isAuthenticated $isAuthenticated");
         if (isAuthenticated) {
-          Get.offAllNamed(pathForRoute(APP_ROUTE.HOME), (route) => false);
+          Modular.to.pushNamedAndRemoveUntil(
+              pathForRoute(APP_ROUTE.CHATS_LIST), (_) => false);
         } else {
-          Get.offAllNamed(pathForRoute(APP_ROUTE.LOGIN), (route) => false);
+          Modular.to.pushNamedAndRemoveUntil(
+              pathForRoute(APP_ROUTE.LOGIN), (_) => false);
         }
       },
       fireImmediately: true,
@@ -59,9 +61,9 @@ class MainStore {
     });
     reaction((_) => this.chatStore.selectedChatId, (String selectedChatId) {
       if (selectedChatId != null) {
-        Get.toNamed("${pathForRoute(APP_ROUTE.CHAT)}$selectedChatId");
+        Modular.to.pushNamed("${pathForRoute(APP_ROUTE.CHAT)}$selectedChatId");
       } else {
-        Get.back();
+        Modular.to.pop();
       }
     });
   }

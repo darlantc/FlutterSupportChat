@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_chat/components/button/button.dart';
-import 'package:flutter_chat/model/author_model.dart';
 import 'package:flutter_chat/model/message_model.dart';
 import 'package:flutter_chat/services/notifications_service.dart';
 import 'package:flutter_chat/stores/chat_store.dart';
+import 'package:flutter_chat/utils/utils.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -26,7 +25,7 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   _didWantToDelete(String messageId) {
-    final ChatStore chatStore = Modular.get<ChatStore>();
+    //final ChatStore chatStore = Modular.get<ChatStore>();
   }
 
   _didWantToEdit(String messageId) {
@@ -123,9 +122,8 @@ class _ChatPageState extends State<ChatPage> {
                     itemCount: messagesList.length,
                     itemBuilder: (BuildContext context, int index) {
                       var message = messagesList[index];
-                      var isMineMessage = isAdminView
-                          ? message.author == AuthorType.admin
-                          : message.author == AuthorType.user;
+                      var isMineMessage =
+                          messageIsMine(isAdminView, message.author);
                       debugPrint("isMineMessage $isMineMessage");
 
                       var textAlign =
@@ -232,6 +230,9 @@ class _ChatPageState extends State<ChatPage> {
           Text(
             message.formattedData,
             textAlign: textAlign,
+            style: TextStyle(
+              fontStyle: FontStyle.italic,
+            ),
           ),
         ],
       ),
@@ -267,26 +268,26 @@ class _ChatPageState extends State<ChatPage> {
   Widget build(BuildContext context) {
     final ChatStore chatStore = Modular.get<ChatStore>();
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Observer(
-          builder: (_) {
-            return Text(chatStore.selectedChat?.subject ?? "");
-          },
-        ),
-        leading: IconButton(
-          icon: Icon(
-            Icons.chevron_left,
+    return WillPopScope(
+      onWillPop: () {
+        chatStore.setSelectedChatId(null);
+        return new Future(() => false);
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title: Observer(
+            builder: (_) {
+              return Text(chatStore.selectedChat?.subject ?? "");
+            },
           ),
-          onPressed: () => chatStore.setSelectedChatId(null),
         ),
-      ),
-      body: SafeArea(
-        child: Column(
-          children: <Widget>[
-            renderMessagesList(context, chatStore),
-            renderChatActions(chatStore),
-          ],
+        body: SafeArea(
+          child: Column(
+            children: <Widget>[
+              renderMessagesList(context, chatStore),
+              renderChatActions(chatStore),
+            ],
+          ),
         ),
       ),
     );

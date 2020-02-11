@@ -76,6 +76,20 @@ abstract class _ChatStoreBase with Store {
     return null;
   }
 
+  @computed
+  int get totalUnreadMessagesCount {
+    int count = 0;
+    this.chatsList.forEach((chat) {
+      if (this.isAdminView) {
+        count += chat.user.unreadMessagesCount;
+      } else {
+        count += chat.user.unreadMessagesCount;
+      }
+    });
+
+    return count;
+  }
+
   clearStore() {
     this.setSelectedChatId(null);
     this.setChatsList(null);

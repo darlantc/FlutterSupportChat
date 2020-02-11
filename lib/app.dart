@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:get/get.dart';
 import 'package:oktoast/oktoast.dart';
 
 class App extends StatelessWidget {
@@ -16,7 +15,7 @@ class App extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         initialRoute: "/",
         onGenerateRoute: Modular.generateRoute,
-        navigatorKey: Get.key,
+        navigatorKey: Modular.navigatorKey,
         navigatorObservers: [
           // AppRouteObserver()
         ],
