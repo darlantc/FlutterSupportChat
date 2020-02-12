@@ -2,16 +2,17 @@
 
 App Flutter para demonstrar o uso das seguintes tecnologias:
 
-* Firebase;
-* MobX;
-* Flutter Modular.
+- Firebase;
+- MobX;
+- Flutter Modular.
 
 > Projeto em desenvolvimento!
 
 ## Roadmap
+
 - [x] Interface da lista de chats;
 - [x] Interface do chat;
-- [ ] Interface adicionar novo chat;
+- [x] Interface adicionar novo chat;
 - [ ] Interface perfil do usuário;
 - [x] Mensagem do tipo imagem;
 - [x] Buscar foto e aplicar crop;

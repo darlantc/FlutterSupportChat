@@ -15,10 +15,14 @@ abstract class _ChatStoreBase with Store {
   bool isAdminView = false;
   @observable
   bool isFetching = false;
+  @observable
+  bool isWaitingForm = false;
 
   @observable
   String selectedChatId;
 
+  @observable
+  String newChatSubject = "";
   @observable
   String message = "";
 
@@ -35,8 +39,12 @@ abstract class _ChatStoreBase with Store {
   @action
   setIsFetching(bool newValue) => this.isFetching = newValue;
   @action
+  setIsWaitingForm(bool newValue) => this.isWaitingForm = newValue;
+  @action
   setSelectedChatId(String newValue) => this.selectedChatId = newValue;
 
+  @action
+  onChangeNewChatSubject(String newValue) => this.newChatSubject = newValue;
   @action
   onChangeMessage(String newValue) => this.message = newValue;
 
@@ -199,5 +207,9 @@ abstract class _ChatStoreBase with Store {
 
   didDeleteChatMessage(String messageId) {
     // TODO: implementar deleção da mensagem
+  }
+
+  createNewChat() {
+    //
   }
 }

@@ -68,14 +68,18 @@ class PrimaryButton extends StatelessWidget {
 }
 
 class FormButton extends StatelessWidget {
+  final String label;
   final bool isEditing;
   final Function onPressed;
-  const FormButton({Key key, this.isEditing, this.onPressed}) : super(key: key);
+  const FormButton({Key key, this.label, this.isEditing, this.onPressed})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return PrimaryButton(
-      label: this.isEditing ? "ATUALIZAR" : "SALVAR",
+      label: this.label?.isNotEmpty ?? false
+          ? this.label
+          : this.isEditing ? "ATUALIZAR" : "SALVAR",
       icon: FontAwesomeIcons.solidSave,
       onPressed: this.onPressed,
     );
