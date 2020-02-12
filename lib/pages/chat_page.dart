@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_chat/components/button/attachment_button.dart';
 import 'package:flutter_chat/model/message_model.dart';
 import 'package:flutter_chat/services/notifications_service.dart';
 import 'package:flutter_chat/stores/chat_store.dart';
@@ -7,6 +10,8 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
+import "package:flutter_chat/extensions/text_extension.dart";
 
 enum MenuOption { delete, update }
 
@@ -104,43 +109,41 @@ class _ChatPageState extends State<ChatPage> {
       builder: (_) {
         var isAdminView = chatStore.isAdminView;
         var messagesList = chatStore.selectedChatMessagesList;
-        return Expanded(
-          child: Container(
-            padding: EdgeInsets.only(top: 16, left: 16, right: 16),
-            child: messagesList == null
-                ? Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Text("Nenhuma mensagem nesta conversa."),
-                        Container(height: 20),
-                        Icon(FontAwesomeIcons.solidComments)
-                      ],
-                    ),
-                  )
-                : ListView.builder(
-                    itemCount: messagesList.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      var message = messagesList[index];
-                      var isMineMessage =
-                          messageIsMine(isAdminView, message.author);
-                      debugPrint("isMineMessage $isMineMessage");
-
-                      var textAlign =
-                          isMineMessage ? TextAlign.right : TextAlign.left;
-                      return GestureDetector(
-                        onLongPress: () => didSelectMessage(message.id),
-                        onTapDown: _storePosition,
-                        child: renderSlidable(
-                          message,
-                          textAlign,
-                          isMineMessage,
-                          isAdminView,
-                        ),
-                      );
-                    },
+        return Container(
+          padding: EdgeInsets.only(top: 16, left: 16, right: 16),
+          child: messagesList == null
+              ? Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Text("Nenhuma mensagem nesta conversa."),
+                      Container(height: 20),
+                      Icon(FontAwesomeIcons.solidComments)
+                    ],
                   ),
-          ),
+                )
+              : ListView.builder(
+                  itemCount: messagesList.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    var message = messagesList[index];
+                    var isMineMessage =
+                        messageIsMine(isAdminView, message.author);
+                    debugPrint("isMineMessage $isMineMessage");
+
+                    var textAlign =
+                        isMineMessage ? TextAlign.right : TextAlign.left;
+                    return GestureDetector(
+                      onLongPress: () => didSelectMessage(message.id),
+                      onTapDown: _storePosition,
+                      child: renderSlidable(
+                        message,
+                        textAlign,
+                        isMineMessage,
+                        isAdminView,
+                      ),
+                    );
+                  },
+                ),
         );
       },
     );
@@ -205,6 +208,41 @@ class _ChatPageState extends State<ChatPage> {
     );
   }
 
+  Widget renderMessageListTileTitle({
+    TextAlign textAlign,
+    String message,
+    String imageUrl,
+  }) {
+    var messageText = Text(
+      message,
+      textAlign: textAlign,
+    ).withMargin();
+
+    if (imageUrl != null) {
+      return Column(
+        crossAxisAlignment: textAlign == TextAlign.left
+            ? CrossAxisAlignment.start
+            : CrossAxisAlignment.end,
+        children: <Widget>[
+          Container(
+            height: 100,
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                alignment: Alignment(-.2, 0),
+                image: NetworkImage(
+                  imageUrl,
+                ),
+                fit: BoxFit.cover,
+              ),
+            ),
+          ),
+          message.isNotEmpty ? messageText : Container(height: 8),
+        ],
+      );
+    }
+    return messageText;
+  }
+
   ListTile renderMessageTile(
     MessageModel message,
     TextAlign textAlign,
@@ -212,12 +250,11 @@ class _ChatPageState extends State<ChatPage> {
     bool isAdminView,
   ) {
     return ListTile(
-      title: Text(
-        message.message,
+      contentPadding: EdgeInsets.symmetric(vertical: 2, horizontal: 8),
+      title: renderMessageListTileTitle(
         textAlign: textAlign,
-        style: TextStyle(
-          fontSize: 20,
-        ),
+        message: message.message,
+        imageUrl: message.imageUrl,
       ),
       subtitle: Row(
         mainAxisAlignment:
@@ -239,13 +276,15 @@ class _ChatPageState extends State<ChatPage> {
     );
   }
 
+  didSelectFile(File file) {
+    print("didSelectFile");
+    print(file);
+  }
+
   Widget renderChatActions(ChatStore chatStore) {
     return Row(
       children: <Widget>[
-        IconButton(
-          icon: Icon(FontAwesomeIcons.paperclip),
-          onPressed: chatStore.didSendMessage,
-        ),
+        AttachmentButton(didSelectFile: this.didSelectFile),
         Expanded(
           child: Container(
             child: TextFormField(
@@ -281,12 +320,12 @@ class _ChatPageState extends State<ChatPage> {
             },
           ),
         ),
-        body: SafeArea(
-          child: Column(
-            children: <Widget>[
-              renderMessagesList(context, chatStore),
-              renderChatActions(chatStore),
-            ],
+        body: SafeArea(child: renderMessagesList(context, chatStore)),
+        bottomNavigationBar: SafeArea(
+          child: Card(
+            margin: EdgeInsets.zero,
+            elevation: 10,
+            child: renderChatActions(chatStore),
           ),
         ),
       ),

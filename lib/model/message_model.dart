@@ -15,6 +15,8 @@ class MessageModel {
   int timestamp;
   MessageType type;
   String adminName;
+  String imageUrl;
+  String fileExtension;
 
   MessageModel({
     @required this.id,
@@ -24,6 +26,8 @@ class MessageModel {
     @required this.timestamp,
     @required this.type,
     this.adminName,
+    this.imageUrl,
+    this.fileExtension,
   });
 
   String get formattedData {

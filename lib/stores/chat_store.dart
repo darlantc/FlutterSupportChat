@@ -154,6 +154,28 @@ abstract class _ChatStoreBase with Store {
       );
       var message3 = MessageModel(
         id: "message3",
+        type: MessageType.image,
+        author: AuthorType.user,
+        message: "Legenda imagem 1",
+        timestamp: 1581361792407,
+        isRead: true,
+        imageUrl:
+            "https://firebasestorage.googleapis.com/v0/b/modboxdev.appspot.com/o/chats%2F-LzliIWPpWxuHqKPV5AN%2F-Lzljk0Zv6DNEwdVjvzx.jpeg?alt=media&token=b627e3eb-0f01-4cf4-ab1c-6e5ebd76de60",
+        fileExtension: "jpeg",
+      );
+      var message4 = MessageModel(
+        id: "message3",
+        type: MessageType.image,
+        author: AuthorType.admin,
+        message: "Legenda da imagem 2",
+        timestamp: 1581361792407,
+        isRead: true,
+        imageUrl:
+            "https://firebasestorage.googleapis.com/v0/b/modboxdev.appspot.com/o/chats%2F-LzmNcuHYXxLDHMf9fyd%2F-M-1-vYRguTFuDcrpeCG.jpeg?alt=media&token=0f07e734-0dcc-41f7-9881-f8c24448430d",
+        fileExtension: "jpeg",
+      );
+      var message5 = MessageModel(
+        id: "message3",
         type: MessageType.text,
         author: AuthorType.user,
         message: "Não estou conseguindo visualizar o relatório",
@@ -163,6 +185,8 @@ abstract class _ChatStoreBase with Store {
       list.add(message1);
       list.add(message2);
       list.add(message3);
+      list.add(message4);
+      list.add(message5);
       this.setSelectedChatMessagesList(list);
     } else {
       this.setSelectedChatMessagesList(null);
