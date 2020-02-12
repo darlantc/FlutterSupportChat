@@ -16,6 +16,7 @@ App Flutter para demonstrar o uso das seguintes tecnologias:
 - [ ] Interface perfil do usuário;
 - [x] Mensagem do tipo imagem;
 - [x] Buscar foto e aplicar crop;
+- [x] Integração com o Firebase;
 - [ ] Login anônimo no Firebase;
 - [ ] Login por email e senha no Firebase;
 - [ ] Cadastrar novo usuário no Firebase;
