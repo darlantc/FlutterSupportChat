@@ -22,6 +22,12 @@ mixin _$ChatStore on _ChatStoreBase, Store {
       (_$selectedMessageForEditingComputed ??=
               Computed<MessageModel>(() => super.selectedMessageForEditing))
           .value;
+  Computed<int> _$totalUnreadMessagesCountComputed;
+
+  @override
+  int get totalUnreadMessagesCount => (_$totalUnreadMessagesCountComputed ??=
+          Computed<int>(() => super.totalUnreadMessagesCount))
+      .value;
 
   final _$isAdminViewAtom = Atom(name: '_ChatStoreBase.isAdminView');
 
@@ -57,6 +63,23 @@ mixin _$ChatStore on _ChatStoreBase, Store {
     }, _$isFetchingAtom, name: '${_$isFetchingAtom.name}_set');
   }
 
+  final _$isWaitingFormAtom = Atom(name: '_ChatStoreBase.isWaitingForm');
+
+  @override
+  bool get isWaitingForm {
+    _$isWaitingFormAtom.context.enforceReadPolicy(_$isWaitingFormAtom);
+    _$isWaitingFormAtom.reportObserved();
+    return super.isWaitingForm;
+  }
+
+  @override
+  set isWaitingForm(bool value) {
+    _$isWaitingFormAtom.context.conditionallyRunInAction(() {
+      super.isWaitingForm = value;
+      _$isWaitingFormAtom.reportChanged();
+    }, _$isWaitingFormAtom, name: '${_$isWaitingFormAtom.name}_set');
+  }
+
   final _$selectedChatIdAtom = Atom(name: '_ChatStoreBase.selectedChatId');
 
   @override
@@ -72,6 +95,23 @@ mixin _$ChatStore on _ChatStoreBase, Store {
       super.selectedChatId = value;
       _$selectedChatIdAtom.reportChanged();
     }, _$selectedChatIdAtom, name: '${_$selectedChatIdAtom.name}_set');
+  }
+
+  final _$newChatSubjectAtom = Atom(name: '_ChatStoreBase.newChatSubject');
+
+  @override
+  String get newChatSubject {
+    _$newChatSubjectAtom.context.enforceReadPolicy(_$newChatSubjectAtom);
+    _$newChatSubjectAtom.reportObserved();
+    return super.newChatSubject;
+  }
+
+  @override
+  set newChatSubject(String value) {
+    _$newChatSubjectAtom.context.conditionallyRunInAction(() {
+      super.newChatSubject = value;
+      _$newChatSubjectAtom.reportChanged();
+    }, _$newChatSubjectAtom, name: '${_$newChatSubjectAtom.name}_set');
   }
 
   final _$messageAtom = Atom(name: '_ChatStoreBase.message');
@@ -170,10 +210,30 @@ mixin _$ChatStore on _ChatStoreBase, Store {
   }
 
   @override
+  dynamic setIsWaitingForm(bool newValue) {
+    final _$actionInfo = _$_ChatStoreBaseActionController.startAction();
+    try {
+      return super.setIsWaitingForm(newValue);
+    } finally {
+      _$_ChatStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   dynamic setSelectedChatId(String newValue) {
     final _$actionInfo = _$_ChatStoreBaseActionController.startAction();
     try {
       return super.setSelectedChatId(newValue);
+    } finally {
+      _$_ChatStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  dynamic onChangeNewChatSubject(String newValue) {
+    final _$actionInfo = _$_ChatStoreBaseActionController.startAction();
+    try {
+      return super.onChangeNewChatSubject(newValue);
     } finally {
       _$_ChatStoreBaseActionController.endAction(_$actionInfo);
     }

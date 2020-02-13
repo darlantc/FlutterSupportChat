@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_chat/components/badge/badge.dart';
+import 'package:flutter_chat/components/loading/loading_view.dart';
 import 'package:flutter_chat/routes/app_routes.dart';
+import 'package:flutter_chat/stores/auth_store.dart';
 import 'package:flutter_chat/stores/chat_store.dart';
 import 'package:flutter_chat/utils/date_utils.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -11,11 +13,16 @@ import "package:flutter_chat/utils/utils.dart";
 import "package:flutter_chat/extensions/text_extension.dart";
 
 class ChatsListPage extends StatelessWidget {
-  Widget renderBody() {
+  Widget renderBody(AuthStore authStore) {
     final ChatStore chatStore = Modular.get<ChatStore>();
-    var isAdminView = chatStore.isAdminView;
     return Observer(builder: (_) {
+      if (!authStore.didVerifyIsLoggedIn) {
+        return LoadingView();
+      }
+
+      var isAdminView = chatStore.isAdminView;
       var chatsList = chatStore.chatsList;
+
       return ListView.builder(
         itemCount: chatsList.length,
         itemBuilder: (BuildContext context, int index) {
@@ -60,8 +67,13 @@ class ChatsListPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final AuthStore authStore = Modular.get<AuthStore>();
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(Icons.exit_to_app),
+          onPressed: authStore.logout,
+        ),
         title: Text("Suas conversas"),
         centerTitle: true,
       ),
@@ -70,7 +82,7 @@ class ChatsListPage extends StatelessWidget {
           padding: EdgeInsets.all(12),
           child: Column(children: <Widget>[
             Expanded(
-              child: renderBody(),
+              child: renderBody(authStore),
             ),
           ]),
         ),

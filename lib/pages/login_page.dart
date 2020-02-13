@@ -24,17 +24,22 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
-  Widget renderButton(AuthStore authStore) {
+  Widget renderButton({
+    Color color = Colors.blue,
+    String label,
+    IconData icon,
+    Function onPressed,
+  }) {
     final Size screenSize = MediaQuery.of(context).size;
 
     return ListTile(
         title: Container(
       width: screenSize.width,
-      margin: EdgeInsets.only(top: 20.0),
-      child: PrimaryButton(
-        icon: Icons.person,
-        label: "ENTRAR",
-        onPressed: () => this.submit(authStore),
+      child: Button(
+        color: color,
+        icon: icon,
+        label: label,
+        onPressed: onPressed,
       ),
     ));
   }
@@ -98,7 +103,18 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
                 this._renderErrorMessage(authStore),
-                this.renderButton(authStore),
+                Container(height: 20),
+                this.renderButton(
+                  icon: Icons.person,
+                  label: "ENTRAR",
+                  onPressed: () => this.submit(authStore),
+                ),
+                this.renderButton(
+                  color: Colors.grey,
+                  icon: Icons.person_outline,
+                  label: "Continuar como Anônimo",
+                  onPressed: authStore.anonymousLogin,
+                ),
               ],
             ),
           ),

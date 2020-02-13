@@ -1,4 +1,5 @@
 import 'package:flutter_chat/routes/app_routes.dart';
+import 'package:flutter_chat/services/firebase_service.dart';
 import 'package:flutter_chat/stores/chat_store.dart';
 import 'package:flutter_chat/stores/settings_store.dart';
 import 'package:flutter_modular/flutter_modular.dart';
@@ -12,14 +13,14 @@ class MainStore {
   ChatStore chatStore;
   SettingsStore settingsStore;
 
-  MainStore() {
+  MainStore(FirebaseService firebaseService) {
     NotificationsService notificationsService = NotificationsService();
 
     // Set Stores
     this.settingsStore = SettingsStore();
 
     this.authStore = AuthStore(
-      // firebaseAuth,
+      firebaseService,
       notificationsService,
     );
 
@@ -31,8 +32,6 @@ class MainStore {
   setReactions() {
     reaction(
       (_) {
-        print(
-            "this.authStore.didVerifyIsLoggedIn ${this.authStore.didVerifyIsLoggedIn}");
         if (this.authStore.didVerifyIsLoggedIn) {
           return this.authStore.isAuthenticated;
         }
